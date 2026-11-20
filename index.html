@@ -366,6 +366,35 @@ footer{padding-block:36px;color:var(--muted);font-size:.9rem}
 footer .wrap{display:grid;gap:10px}
 footer b{color:var(--ink)}
 
+/* banner promosi */
+.promo{background:var(--surface);border-bottom:1px solid var(--line)}
+.promo-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;padding-block:44px}
+@media (max-width:900px){.promo-g{grid-template-columns:minmax(0,1fr);padding-block:32px}}
+.pb{border-radius:14px;padding:22px;display:grid;gap:12px;align-content:start;min-width:0}
+.pb-rm{background:var(--steel-soft);border:1px solid var(--line)}
+.pb-pu{background:var(--hero-bg);color:var(--hero-fg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px}
+.pb-pu .eyebrow{color:var(--accent)}.pb-pu .pb-p{color:var(--hero-muted)}
+.pb-h{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.pb-n{font:800 3.6rem/.9 var(--f-display);color:var(--accent);background:var(--ink);border-radius:10px;padding:8px 12px;min-width:84px;text-align:center}
+.pb-pu .pb-n{background:var(--accent);color:var(--on-accent)}
+.pb h2{font-size:clamp(1.5rem,2.4vw,1.95rem);text-transform:uppercase;margin-top:4px}
+.pb h3{font:700 .78rem/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.pb-p{color:var(--muted);font-size:.98rem}
+.pt,.pa{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pt li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;display:grid;gap:2px;align-content:start}
+.pt b{font:700 .95rem/1.2 var(--f-body)}.pt span{font-size:.8rem;color:var(--muted);line-height:1.3}.pt i{font:500 .72rem var(--f-mono);font-style:normal;color:var(--steel)}
+.pa{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+.pa li{background:rgba(255,255,255,.06);border:1px solid rgba(234,241,248,.16);border-left:4px solid var(--c);border-radius:8px;padding:9px 10px;display:grid;gap:3px;align-content:start}
+.pa li.ck{--c:#7FB0E0}.pa li.bm{--c:var(--accent)}.pa li.sda{--c:#5CC08D}
+.pa em{font:600 .68rem/1 var(--f-mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.pa b{font:600 .92rem/1.25 var(--f-body)}.pa i{font:600 .8rem var(--f-mono);font-style:normal;color:var(--hero-muted)}
+@media (min-width:1100px){.pt{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:560px){.pt,.pa{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.pt span{display:none}.pb{padding:16px}.pb-n{font-size:2.8rem;min-width:66px}.pa b{font-size:.86rem}}
+.pb-f{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+.pb-f .price{flex:1 1 100%}
+.pb-pu .price s{color:var(--hero-muted)}.pb-pu .price b{color:#5CC08D}
+.pb-pu .btn-line{color:var(--hero-fg);box-shadow:inset 0 0 0 1.5px rgba(234,241,248,.35)}
+
 /* panel pemilik */
 .owner-btn{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:55;box-shadow:var(--shadow)}
 .drawer{position:fixed;inset:0;z-index:85;display:flex;justify-content:flex-end;background:rgba(6,12,20,.5)}
@@ -471,6 +500,22 @@ footer b{color:var(--ink)}
   <div><b class="mono">514</b><span>kabupaten/kota dengan IKK 2026</span></div>
   <div><b class="mono">0</b><span>koneksi internet yang dibutuhkan untuk menghitung</span></div>
 </div></div>
+
+<section class="promo" id="contoh" aria-label="Templat dan contoh RAB"><div class="wrap promo-g">
+  <article class="pb pb-rm">
+    <div class="pb-h"><span class="pb-n mono">16</span><div><p class="eyebrow">RAB Rumah &amp; Ruko</p><h2>Templat RAB rumah dan ruko siap pakai</h2></div></div>
+    <p class="pb-p">Pilih tipe, isi luas bangunan, RAB lengkap dengan material dan kurva S langsung jadi.</p>
+    <h3>8 tipe rumah</h3><ul class="pt"><li><b>Tipe 21/60</b><span>Rumah subsidi terkecil, 1 KT</span><i>LB 21 m² · 1 lantai</i></li><li><b>Tipe 30/60</b><span>Subsidi FLPP populer, 2 KT</span><i>LB 30 m² · 1 lantai</i></li><li><b>Tipe 36/72</b><span>Batas atas rumah subsidi, 2 KT</span><i>LB 36 m² · 1 lantai</i></li><li><b>Tipe 45/90</b><span>Rumah menengah kecil, 2 KT</span><i>LB 45 m² · 1 lantai</i></li><li><b>Tipe 54/120</b><span>3 KT, 2 KM</span><i>LB 54 m² · 1 lantai</i></li><li><b>Tipe 60/120</b><span>3 KT, 2 KM</span><i>LB 60 m² · 1 lantai</i></li><li><b>Tipe 70/144</b><span>3 KT, 2 KM, ruang lebih lega</span><i>LB 70 m² · 1 lantai</i></li><li><b>Tipe 108/72 (2 lantai)</b><span>Rumah 2 lantai di kavling 6×12, 4 KT, 3 KM</span><i>LB 108 m² · 2 lantai</i></li></ul>
+    <h3>8 tipe ruko</h3><ul class="pt"><li><b>Ruko 1 Lantai 4×10</b><span>Kios usaha, atap metal</span><i>LB 34 m² · 1 lantai</i></li><li><b>Ruko 1,5 Lantai 4×12 (mezanin)</b><span>Toko dengan mezanin separuh lantai</span><i>LB 63 m² · 1,5 lantai</i></li><li><b>Ruko 2 Lantai 4×12</b><span>Toko di bawah, tinggal/kantor di atas</span><i>LB 84 m² · 2 lantai</i></li><li><b>Ruko 2 Lantai 5×15</b><span>Ukuran developer paling umum</span><i>LB 135 m² · 2 lantai</i></li><li><b>Ruko 3 Lantai 4,5×15</b><span>Lebar khas Jabodetabek</span><i>LB 182,25 m² · 3 lantai</i></li><li><b>Ruko 3 Lantai 5×15</b><span>LB ±225 m², 3 KM</span><i>LB 202,5 m² · 3 lantai</i></li><li><b>Ruko 3 Lantai Hook 7×12</b><span>Unit sudut, satu sisi samping terbuka</span><i>LB 220,5 m² · 3 lantai</i></li><li><b>Ruko 4 Lantai 5×15</b><span>Estimasi kasar; cek tanah dan pondasi tiang</span><i>LB 270 m² · 4 lantai</i></li></ul>
+    <div class="pb-f"><span class="price"><s>Rp 200.000</s> <b>Rp 80.000</b></span><a class="btn btn-y" href="#kontak" data-order="rm">Pesan RAB Rumah &amp; Ruko</a><a class="btn btn-line" data-demo="rm" href="#" target="_blank" rel="noopener">Coba demo</a></div>
+  </article>
+  <article class="pb pb-pu">
+    <div class="pb-h"><span class="pb-n mono">14</span><div><p class="eyebrow">AHSP Pro · pekerjaan umum</p><h2>Contoh RAB pekerjaan umum di dalam aplikasi</h2></div></div>
+    <p class="pb-p">Buka, ubah volume dan lokasi, lalu unduh Excel. Angka di bawah adalah total contoh dengan harga Kota Medan 2026.</p>
+    <ul class="pa"><li class="ck"><em>Cipta Karya</em><b>Rumah 1 lantai 6 × 8 m</b><i>± Rp 383 jt</i></li><li class="ck"><em>Cipta Karya</em><b>Gedung kantor 2 lantai 480 m²</b><i>± Rp 3,39 M</i></li><li class="ck"><em>Cipta Karya</em><b>SPAM jaringan perpipaan 300 SR</b><i>± Rp 3,95 M</i></li><li class="ck"><em>Cipta Karya</em><b>Drainase lingkungan U-ditch 600 m</b><i>± Rp 700 jt</i></li><li class="ck"><em>Cipta Karya</em><b>Lapangan tenis hard court ganda</b><i>± Rp 914 jt</i></li><li class="ck"><em>Cipta Karya</em><b>Lapangan tenis khusus single</b><i>± Rp 819 jt</i></li><li class="ck"><em>Cipta Karya</em><b>Kolam renang 25 × 12,5 m</b><i>± Rp 1,40 M</i></li><li class="bm"><em>Bina Marga</em><b>Preservasi & pelebaran jalan aspal 3 km</b><i>± Rp 2,61 M</i></li><li class="bm"><em>Bina Marga</em><b>Jembatan gelagar pratekan 16 m</b><i>± Rp 1,99 M</i></li><li class="bm"><em>Bina Marga</em><b>Saluran samping & trotoar 500 m</b><i>± Rp 2,41 M</i></li><li class="bm"><em>Bina Marga</em><b>Dermaga multipurpose jetty 315 × 50 m</b><i>± Rp 358,4 M</i></li><li class="sda"><em>SDA</em><b>Rehabilitasi saluran irigasi 1,5 km</b><i>± Rp 4,29 M</i></li><li class="sda"><em>SDA</em><b>Normalisasi sungai & perkuatan tebing 1 km</b><i>± Rp 7,04 M</i></li><li class="sda"><em>SDA</em><b>Embung kapasitas ± 15.000 m³</b><i>± Rp 1,68 M</i></li></ul>
+    <div class="pb-f"><span class="price">Mulai <s>Rp 250.000</s> <b>Rp 100.000</b></span><a class="btn btn-y" href="#aplikasi" data-order="ck">Pilih edisi AHSP Pro</a><a class="btn btn-line" data-demo="pu" href="#" target="_blank" rel="noopener">Coba demo</a></div>
+  </article>
+</div></section>
 
 <section class="blk" id="produk"><div class="wrap">
   <div class="sh"><p class="eyebrow">Dua aplikasi, satu cara kerja</p><h2>Pilih sesuai pekerjaan yang Anda tangani</h2><p>Keduanya bekerja tanpa internet, memakai harga dasar Kota Medan 2026 × IKK lokasi, dan menghasilkan Excel berumus siap cetak A4. Bedanya ada pada jenis proyek. Kalkulator Volume ikut sebagai bonus di keduanya.</p></div>
