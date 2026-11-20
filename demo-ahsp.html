@@ -252,6 +252,12 @@ table.sv .r{text-align:right}
 .vcb{padding:2px 6px;margin-left:2px;color:var(--steel)}
 @media (max-width:560px){.vc-panel{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:calc(72px + env(safe-area-inset-bottom,0px))}.vc-fields{grid-template-columns:1fr}.vc-shape{grid-template-columns:96px minmax(0,1fr)}}
 @media print{.vc-fab,.vc-panel{display:none!important}}
+.jdw{border-top:1px solid var(--line);padding:16px 20px 20px;display:grid;gap:12px}
+.jdw-h{display:flex;gap:12px 18px;align-items:center;flex-wrap:wrap}.jdw-h h3{margin:0;font-family:var(--f-disp);font-stretch:112%;font-weight:700;font-size:16px;flex:1 1 auto}
+table.jt{min-width:640px}table.jt input.jn{width:64px;text-align:right;padding:3px 6px}
+.gb{position:relative;height:12px;background:var(--paper);border-radius:3px;overflow:hidden;min-width:160px}.gb i{position:absolute;top:0;bottom:0;background:var(--steel);border-radius:3px}
+.jdw-c{background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px;overflow-x:auto}
+
 .sc-mark{width:32px;height:32px;flex:none;box-sizing:border-box;padding:2px;background:#fff;border-radius:7px;align-self:center;box-shadow:0 0 0 1px rgba(0,0,0,.08)}.sc-by{font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap;align-self:center}.sc-by b{color:#E8A317}
 </style>
 
@@ -313,6 +319,7 @@ table.sv .r{text-align:right}
       <button class="btn" id="projDup">Duplikat</button>
       <button class="btn danger" id="projDel">Hapus proyek</button>
       <span style="flex:1"></span>
+      <button class="btn" id="rabPrint" type="button">Cetak A4</button>
       <button class="btn pri" id="rabExport">Unduh RAB (.xlsx)</button>
     </div>
     <div class="panel" id="rab"></div>
@@ -1122,8 +1129,8 @@ function renderRab() {
   });
   h += `${ro ? '' : '<tr><td></td><td colspan="7" style="padding-block:12px"><button class="btn" id="secAdd">+ Tambah bagian pekerjaan</button></td></tr>'}</tbody></table></div>
   <div class="recap"><table><tr><td>Jumlah</td><td>${rp(T.sum)}</td></tr><tr><td>PPN ${fmt(p.ppn ?? S.set.ppn, (p.ppn ?? S.set.ppn) % 1 ? 1 : 0)}%</td><td>${rp(T.ppn)}</td></tr><tr><td>Total</td><td>${rp(T.total)}</td></tr><tr class="big"><td>Dibulatkan</td><td>${rp(T.bulat)}</td></tr></table></div>
-  <div class="terb">Terbilang: ${esc(terbilang(T.bulat))} rupiah</div>`;
-  el.innerHTML = h;
+  <div class="terb">Terbilang: ${esc(terbilang(T.bulat))} rupiah</div><div id="jdwBox"></div>`;
+  el.innerHTML = h; renderJadwal(p, T, ro);
   if (window.VC_REFRESH) window.VC_REFRESH();
   if (ro) { el.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { bSel = 'Semua'; divSel = ''; renderBidang(); renderDivisi(); showView('ahsp'); selectItem(+b.dataset.go, false); }); if ($('#dupEx')) $('#dupEx').onclick = () => $('#projDup').click(); return; }
   el.querySelectorAll('[data-f]').forEach(i => i.onchange = () => { const f = i.dataset.f; if (f === 'ppn') { const n = parseNum(i.value); if (isNaN(n)) return toast('PPN harus berupa angka.'); p.ppn = n; } else p[f] = i.value; persistProj(p); if (f === 'nama') renderProjSel(); if (f === 'ppn' || p.contoh === false) renderRab(); });
@@ -1340,15 +1347,18 @@ const XW = (() => {
   add('pn', 1, 0, 0, 164, TOP);
   add('pth', 2, 2, 1, 0, 'vertical="center" ' + W);
   add('sigb', 2, 0, 0, 0, 'horizontal="center"');
+  add('inpi', 1, 4, 1, 1, 'horizontal="center" ' + TOP);
+  add('wk', 1, 0, 1, 167, 'horizontal="center" ' + TOP);
+  add('wkT', 2, 3, 1, 167, 'horizontal="center" ' + TOP);
   const WRAP = new Set(['val', 'note', 'hdr', 'c', 'sec', 'it', 'sub']);
   const styles = () => `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="3"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="#,##0.0000"/><numFmt numFmtId="166" formatCode="0.00%"/></numFmts>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="4"><numFmt numFmtId="164" formatCode="#,##0.00"/><numFmt numFmtId="165" formatCode="#,##0.0000"/><numFmt numFmtId="166" formatCode="0.00%"/><numFmt numFmtId="167" formatCode="0.00;-0.00;;@"/></numFmts>
 <fonts count="6"><font><sz val="10"/><name val="Arial"/><family val="2"/></font><font><sz val="9"/><name val="Arial"/><family val="2"/></font><font><b/><sz val="9"/><name val="Arial"/><family val="2"/></font><font><b/><sz val="12"/><name val="Arial"/><family val="2"/></font><font><i/><sz val="9"/><name val="Arial"/><family val="2"/></font><font><b/><sz val="10"/><name val="Arial"/><family val="2"/></font></fonts>
 <fills count="6"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFD9E2F3"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF2F2F2"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFF2CC"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE2EFDA"/><bgColor indexed="64"/></patternFill></fill></fills>
 <borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color auto="1"/></left><right style="thin"><color auto="1"/></right><top style="thin"><color auto="1"/></top><bottom style="thin"><color auto="1"/></bottom><diagonal/></border></borders>
 <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
 <cellXfs count="${XF.length}">${XF.map(x => `<xf numFmtId="${x.fmt}" fontId="${x.font}" fillId="${x.fill}" borderId="${x.border}" xfId="0"${x.fmt ? ' applyNumberFormat="1"' : ''} applyFont="1"${x.fill ? ' applyFill="1"' : ''}${x.border ? ' applyBorder="1"' : ''}${x.al ? ` applyAlignment="1"><alignment ${x.al}/></xf>` : '/>'}`).join('')}</cellXfs>
-<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles><dxfs count="1"><dxf><fill><patternFill patternType="solid"><fgColor rgb="FF9BC2E6"/><bgColor rgb="FF9BC2E6"/></patternFill></fill></dxf></dxfs></styleSheet>`;
   const colPt = w => (Math.trunc(w * 7 + 5)) * 0.75;
   // A4: 595.3 × 841.9 pt; margin kiri 0,5", kanan 0,4", atas 0,6", bawah 0,7"
   const PAGE = {portrait: [595.3 - 64.8, 841.9 - 93.6], landscape: [841.9 - 64.8, 595.3 - 93.6]};
@@ -1403,7 +1413,7 @@ const XW = (() => {
     const nR = Math.max(1, sh.rows.length);
     return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><dimension ref="A1:${col(maxC)}${nR}"/><sheetViews><sheetView showGridLines="0" workbookViewId="0"${sh.tabSelected ? ' tabSelected="1"' : ''}${sh.freeze ? `><pane ySplit="${sh.freeze}" topLeftCell="A${sh.freeze + 1}" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A${sh.freeze + 1}" sqref="A${sh.freeze + 1}"/></sheetView>` : '/>'}</sheetViews><sheetFormatPr defaultRowHeight="12.75"/>
-<cols>${sh.cols.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${rows}</sheetData>${merges.length ? `<mergeCells count="${merges.length}">${merges.map(m => `<mergeCell ref="${m}"/>`).join('')}</mergeCells>` : ''}<printOptions horizontalCentered="1"/><pageMargins left="0.5" right="0.4" top="0.6" bottom="0.7" header="0.3" footer="0.3"/><pageSetup paperSize="9" scale="${sh.scale}" fitToWidth="1" fitToHeight="0" orientation="${sh.orient || 'portrait'}"/><headerFooter><oddFooter>${esc('&L&"Arial,Italic"&7' + (sh.footer || '') + '&R&"Arial,Regular"&8Halaman &P dari &N')}</oddFooter></headerFooter>${sh.breaks.length ? `<rowBreaks count="${sh.breaks.length}" manualBreakCount="${sh.breaks.length}">${sh.breaks.map(b => `<brk id="${b}" max="16383" man="1"/>`).join('')}</rowBreaks>` : ''}</worksheet>`;
+<cols>${sh.cols.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join('')}</cols><sheetData>${rows}</sheetData>${merges.length ? `<mergeCells count="${merges.length}">${merges.map(m => `<mergeCell ref="${m}"/>`).join('')}</mergeCells>` : ''}${sh.chart ? `<conditionalFormatting sqref="F5:${col(sh.cols.length - 1)}${4 + (sh.nSec || 0)}"><cfRule type="cellIs" dxfId="0" priority="1" operator="greaterThan"><formula>0</formula></cfRule></conditionalFormatting>` : ''}<printOptions horizontalCentered="1"/><pageMargins left="0.5" right="0.4" top="0.6" bottom="0.7" header="0.3" footer="0.3"/><pageSetup paperSize="9" scale="${sh.scale}" fitToWidth="1" fitToHeight="0" orientation="${sh.orient || 'portrait'}"/><headerFooter><oddFooter>${esc('&L&"Arial,Italic"&7' + (sh.footer || '') + '&R&"Arial,Regular"&8Halaman &P dari &N')}</oddFooter></headerFooter>${sh.breaks.length ? `<rowBreaks count="${sh.breaks.length}" manualBreakCount="${sh.breaks.length}">${sh.breaks.map(b => `<brk id="${b}" max="16383" man="1"/>`).join('')}</rowBreaks>` : ''}</worksheet>`;
   }
   function book(sheets) {
     const files = [];
@@ -1418,11 +1428,12 @@ const XW = (() => {
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`});
     files.push({name: 'xl/styles.xml', data: styles()});
     sheets.forEach((s, i) => { s.tabSelected = i === 0; files.push({name: `xl/worksheets/sheet${i + 1}.xml`, data: sheetXml(s)}); });
+    sheets.forEach((s, i) => { if (s.chart && window.SCP) SCP.addChart(files, i + 1, s.chart); });
     return zip(files);
   }
   return {book, col};
 })();
-function buildLinkedWb(ids, p) {
+function buildLinkedWb(ids, p, raw) {
   const all = []; const seen = new Set(); const stack = [...ids];
   while (stack.length) { const id = stack.shift(); if (seen.has(id)) continue; seen.add(id); all.push(id); const it = ITEMS[id]; for (const s of ['A', 'B', 'C']) for (const c of (it[s] || [])) for (const q of c.pids) if (!seen.has(q)) stack.push(q); }
   const keys = []; const ks = new Set(); for (const id of all) { const it = ITEMS[id]; for (const s of ['A', 'B', 'C']) for (const c of (it[s] || [])) for (const k of c.keys) if (!ks.has(k) && HSD[k]) { ks.add(k); keys.push(k); } }
@@ -1536,14 +1547,84 @@ function buildLinkedWb(ids, p) {
     rk.rows.push({c: [C('', 'cc'), C('DIBULATKAN', 'tl', null, 2), null, C(T.bulat, 'tb', `IF(${RNDC}>0,ROUNDDOWN(D${kJ + 3}/${RNDC},0)*${RNDC},D${kJ + 3})`)]});
     rk.rows.push({c: [C('Terbilang: ' + terbilang(T.bulat) + ' rupiah', 'note', null, 4)]});
     rk.rows.push({c: []}, {c: []}, {c: [null, null, null, C('……………, ………………… ' + S.set.tahun, 'sig')]}, {c: [null, null, null, C('Disusun oleh,', 'sig')]}, {c: []}, {c: []}, {c: []}, {c: [null, null, null, C('(……………………………………)', 'sigb')]}, {c: [null, null, null, C('NIP/NIK.', 'sig')]});
-    sheets.push(rk, rab);
+    const ksh = kurvaSheet(p, T, f0, kJ, foot); ksh.nSec = p.sections.length; sheets.push(rk, rab, ksh);
   }
   sheets.push(an, hd, info);
-  return XW.book(sheets);
+  return raw ? sheets : XW.book(sheets);
+}
+
+/* ---------- Jadwal pelaksanaan & Kurva S (SipilCore) ---------- */
+function jadwalOf(p, T) {
+  const n = p.sections.length, N = Math.max(2, Math.min(104, Math.round(+p.minggu || (n * 2 + 4))));
+  const sum = T.sum || 0;
+  const rows = p.sections.map((s, i) => {
+    const d0 = n > 1 ? Math.max(1, Math.round(N * .35)) : N, m0 = n > 1 ? 1 + Math.round(i * (N - d0) / (n - 1)) : 1;
+    const m = Math.max(1, Math.round(+s.jm || m0)), d = Math.max(1, Math.round(+s.jd || d0));
+    return {b: sum ? T.secs[i] / sum * 100 : 0, m, d};
+  });
+  const W = Math.max(1, ...rows.map(r => r.m + r.d - 1)); const weekly = Array(W).fill(0);
+  rows.forEach(r => { for (let w = r.m; w < r.m + r.d; w++) weekly[w - 1] += r.b / r.d; });
+  let c = 0; const cum = weekly.map(x => c += x);
+  return {rows, W, N, weekly, cum};
+}
+function kurvaSheet(p, T, f0, kJ, foot) {
+  const C = (v, s, f, span) => ({v, s, f, span}), J = jadwalOf(p, T), W = J.W, col = XW.col, NC = 5 + W;
+  const sh = {name: 'Kurva S', orient: 'landscape', cols: [5, 34, 9, 8, 8, ...Array(W).fill(W > 30 ? 4.8 : W > 20 ? 5.6 : W > 12 ? 6 : 7)], footer: foot, titleRows: [3, 3], rows: [
+    {c: [C('JADWAL PELAKSANAAN PEKERJAAN DAN KURVA S', 'title', null, NC)], ht: 20},
+    {c: [C(p.nama || '', 'sub', null, NC)]}, {c: []},
+    {c: ['No', 'Uraian Pekerjaan', 'Bobot (%)', 'Mulai (mg ke)', 'Durasi (mg)', ...Array.from({length: W}, (_, w) => 'M' + (w + 1))].map(t => C(t, 'hdr')), ht: 30}]};
+  const a = sh.rows.length + 1;
+  p.sections.forEach((s, i) => {
+    const r = sh.rows.length + 1, R = J.rows[i];
+    const cells = [C(romanOf(i + 1), 'cc'), C(s.nama, 'c'), C(R.b, 'n', `IF(Rekap!$D$${kJ + 1}=0,0,Rekap!$D$${f0 + i + 1}/Rekap!$D$${kJ + 1}*100)`), C(R.m, 'inpi'), C(R.d, 'inpi')];
+    for (let w = 1; w <= W; w++) cells.push(C(w >= R.m && w < R.m + R.d ? R.b / R.d : 0, 'wk', `IF(AND(${w}>=$D${r},${w}<$D${r}+$E${r}),$C${r}/$E${r},0)`));
+    sh.rows.push({c: cells});
+  });
+  const z = sh.rows.length, wr = z + 1;
+  const tw = [C('', 'tl'), C('Rencana per minggu (%)', 'tl'), C(z >= a ? 100 : 0, 'tn', `SUM(C${a}:C${z})`), C('', 'tl'), C('', 'tl')];
+  const tc = [C('', 'tl'), C('Kumulatif (%)', 'tl'), C('', 'tl'), C('', 'tl'), C('', 'tl')];
+  for (let w = 0; w < W; w++) {
+    tw.push(C(J.weekly[w], 'wkT', `SUM(${col(5 + w)}${a}:${col(5 + w)}${z})`));
+    tc.push(C(J.cum[w], 'wkT', w ? `${col(4 + w)}${wr + 1}+${col(5 + w)}${wr}` : `${col(5)}${wr}`));
+  }
+  sh.rows.push({c: tw}, {c: tc}, {c: []}, {c: [C('Ubah minggu mulai dan durasi di kolom D–E (sel kuning). Bobot diambil dari Rekap; sebaran per minggu, kumulatif, dan grafik Kurva S ikut menghitung ulang.', 'note', null, NC)]});
+  const g0 = sh.rows.length;
+  for (let k = 0; k < 22; k++) sh.rows.push({c: [], ht: 15, pad: 1});
+  const L = col(4 + W), q = "'Kurva S'!";
+  sh.chart = {title: 'KURVA S · ' + (p.nama || ''), catRef: `${q}$F$4:$${L}$4`, barRef: `${q}$F$${wr}:$${L}$${wr}`, cumRef: `${q}$F$${wr + 1}:$${L}$${wr + 1}`,
+    cats: Array.from({length: W}, (_, w) => 'M' + (w + 1)), bars: J.weekly, cum: J.cum, from: [1, g0], to: [Math.max(12, NC), g0 + 22]};
+  return sh;
+}
+function renderJadwal(p, T, ro) {
+  const box = document.getElementById('jdwBox'); if (!box) return;
+  const J = jadwalOf(p, T), RO = ro ? ' disabled' : '';
+  let h = `<div class="jdw"><div class="jdw-h"><h3>Jadwal pelaksanaan &amp; Kurva S</h3>
+    <label class="muted" style="display:flex;gap:6px;align-items:center;font-size:13px">Rencana durasi <input class="f mono" id="jdN" inputmode="numeric" style="width:64px;text-align:right" value="${J.N}"${RO}> minggu</label>
+    ${ro ? '<span class="muted" style="font-size:12.5px">Contoh: duplikat proyek untuk mengubah jadwal.</span>' : '<button class="btn sm" id="jdAuto" type="button">Sebar otomatis</button>'}</div>
+    <div class="tw"><table class="rb jt"><thead><tr><th>No</th><th>Bagian pekerjaan</th><th class="r">Bobot (%)</th><th class="r">Mulai (mg ke)</th><th class="r">Durasi (mg)</th><th style="min-width:180px">Rentang minggu 1–${J.W}</th></tr></thead><tbody>`;
+  p.sections.forEach((s, i) => { const R = J.rows[i];
+    h += `<tr><td class="mono">${romanOf(i + 1)}</td><td>${esc(s.nama)}</td><td class="r num">${fmt(R.b, 2)}</td>
+      <td class="r"><input class="f mono jn" data-jm="${i}" inputmode="numeric" value="${R.m}"${RO}></td><td class="r"><input class="f mono jn" data-jd="${i}" inputmode="numeric" value="${R.d}"${RO}></td>
+      <td><div class="gb"><i style="left:${((R.m - 1) / J.W * 100).toFixed(2)}%;width:${(R.d / J.W * 100).toFixed(2)}%"></i></div></td></tr>`; });
+  h += `</tbody></table></div><div class="jdw-c">${window.SCP ? SCP.svgS(J.weekly, J.cum, {w: 760, h: 250}) : ''}</div>
+    <p class="muted" style="margin:0;font-size:12.5px">Bobot tiap bagian = jumlah harga bagian ÷ jumlah RAB. Jadwal dan Kurva S ikut tercetak (Cetak A4) dan masuk ke lembar <b>Kurva S</b> di Excel, lengkap dengan rumus dan grafiknya.</p></div>`;
+  box.innerHTML = h;
+  if (ro) return;
+  const set = (i, k, v) => { const n = Math.round(parseNum(v)); if (!(n >= 1 && n <= 104)) { toast('Isi angka minggu 1 sampai 104.'); renderJadwal(p, T, ro); return; } const s = p.sections[i]; const R = J.rows[i]; s.jm = R.m; s.jd = R.d; s[k] = n; persistProj(p); renderJadwal(p, T, ro); };
+  box.querySelectorAll('[data-jm]').forEach(x => x.onchange = () => set(+x.dataset.jm, 'jm', x.value));
+  box.querySelectorAll('[data-jd]').forEach(x => x.onchange = () => set(+x.dataset.jd, 'jd', x.value));
+  box.querySelector('#jdN').onchange = e => { const n = Math.round(parseNum(e.target.value)); if (!(n >= 2 && n <= 104)) { toast('Durasi 2 sampai 104 minggu.'); renderJadwal(p, T, ro); return; } p.minggu = n; p.sections.forEach(s => { delete s.jm; delete s.jd; }); persistProj(p); renderJadwal(p, T, ro); toast('Jadwal disebar ulang untuk ' + n + ' minggu.'); };
+  box.querySelector('#jdAuto').onclick = () => { p.sections.forEach(s => { delete s.jm; delete s.jd; }); persistProj(p); renderJadwal(p, T, ro); };
+}
+function printRab() {
+  const p = proj(); if (!p) return; const ids = []; for (const sec of p.sections) for (const r of sec.rows) if (r.item != null) ids.push(r.item);
+  const sheets = buildLinkedWb([...new Set(ids)], p, true);
+  SCP.run(SCP.fromXW(sheets), {title: 'RAB ' + (p.nama || ''), footer: (DEMO ? 'VERSI DEMO · ' : '') + (sheets[0].footer || ''), demo: DEMO, off: ['Info']});
 }
 function romanOf(n) { const v = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let s = ''; for (const [a, r] of v) while (n >= a) { s += r; n -= a; } return s; }
 function exportItems(ids, name) { saveFile(name, buildLinkedWb(ids, null)); }
 $('#hsdExport').onclick = () => { const wb = XL.book_new(); XL.book_append_sheet(wb, sheetFrom(hsdAoa(null), [12, 18, 28, 8, 55, 9, 16, 16, 16, 40], [6, 7, 8]), 'Harga Dasar'); saveFile(`Harga Dasar ${S.set.daerah} ${S.set.tahun}.xlsx`, wb); };
+$('#rabPrint').onclick = () => printRab();
 $('#rabExport').onclick = () => { const p = proj(); if (!p) return; const ids = []; for (const sec of p.sections) for (const r of sec.rows) if (r.item != null) ids.push(r.item); saveFile(`RAB ${p.nama || 'proyek'}.xlsx`, buildLinkedWb([...new Set(ids)], p)); };
 $('#hsdImport').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
@@ -1889,5 +1970,173 @@ renderAll();
 initStore();
 </script>
 
+<script>
+/* SipilCore: grafik Kurva S di Excel + Cetak A4 (dipakai AHSP Pro dan RAB Rumah & Ruko) */
+(function () {
+  const X = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+
+  /* ---------- grafik Kurva S di file .xlsx ----------
+     files: [[nama, isi], ...] atau [{name, data}, ...]
+     ch: {sheet, catRef, barRef, cumRef, cats[], bars[], cum[], from:[kol,baris], to:[kol,baris], title} (kol/baris mulai 0) */
+  function addChart(files, n, ch) {
+    const nm = f => Array.isArray(f) ? f[0] : f.name, get = k => files.find(f => nm(f) === k);
+    const rd = f => Array.isArray(f) ? f[1] : f.data, wr = (f, d) => { if (Array.isArray(f)) f[1] = d; else f.data = d; };
+    const add = (k, d) => files.push(Array.isArray(files[0]) ? [k, d] : {name: k, data: d});
+    const k = files.filter(f => /^xl\/charts\/chart\d+\.xml$/.test(nm(f))).length + 1;
+    const sh = get(`xl/worksheets/sheet${n}.xml`); if (!sh) return;
+    wr(sh, rd(sh).replace('</worksheet>', `<drawing r:id="rIdKS${k}"/></worksheet>`));
+    add(`xl/worksheets/_rels/sheet${n}.xml.rels`, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdKS${k}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing${k}.xml"/></Relationships>`);
+    const anc = (t, [c, r]) => `<xdr:${t}><xdr:col>${c}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${r}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:${t}>`;
+    add(`xl/drawings/drawing${k}.xml`, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><xdr:twoCellAnchor editAs="oneCell">${anc('from', ch.from)}${anc('to', ch.to)}<xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="${k + 1}" name="Kurva S"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/></xdr:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" r:id="rId1"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor></xdr:wsDr>`);
+    add(`xl/drawings/_rels/drawing${k}.xml.rels`, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart" Target="../charts/chart${k}.xml"/></Relationships>`);
+    const W = ch.cats.length;
+    const strC = a => `<c:strCache><c:ptCount val="${a.length}"/>${a.map((v, i) => `<c:pt idx="${i}"><c:v>${X(v)}</c:v></c:pt>`).join('')}</c:strCache>`;
+    const numC = a => `<c:numCache><c:formatCode>0.00</c:formatCode><c:ptCount val="${a.length}"/>${a.map((v, i) => `<c:pt idx="${i}"><c:v>${(+v || 0).toFixed(4)}</c:v></c:pt>`).join('')}</c:numCache>`;
+    const cat = `<c:cat><c:strRef><c:f>${X(ch.catRef)}</c:f>${strC(ch.cats)}</c:strRef></c:cat>`;
+    const txt = (t, sz, b) => `<c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="${sz}" b="${b ? 1 : 0}"/></a:pPr><a:r><a:rPr lang="id-ID" sz="${sz}" b="${b ? 1 : 0}"/><a:t>${X(t)}</a:t></a:r></a:p></c:rich></c:tx>`;
+    add(`xl/charts/chart${k}.xml`, `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><c:roundedCorners val="0"/><c:chart><c:title>${txt(ch.title || 'KURVA S', 1200, 1)}<c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>`
+      + `<c:barChart><c:barDir val="col"/><c:grouping val="clustered"/><c:varyColors val="0"/><c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>Rencana per minggu (%)</c:v></c:tx><c:spPr><a:solidFill><a:srgbClr val="9BC2E6"/></a:solidFill></c:spPr><c:invertIfNegative val="0"/>${cat}<c:val><c:numRef><c:f>${X(ch.barRef)}</c:f>${numC(ch.bars)}</c:numRef></c:val></c:ser><c:gapWidth val="50"/><c:axId val="5011"/><c:axId val="5012"/></c:barChart>`
+      + `<c:lineChart><c:grouping val="standard"/><c:varyColors val="0"/><c:ser><c:idx val="1"/><c:order val="1"/><c:tx><c:v>Kumulatif (%)</c:v></c:tx><c:spPr><a:ln w="28575" cap="rnd"><a:solidFill><a:srgbClr val="C00000"/></a:solidFill><a:round/></a:ln></c:spPr><c:marker><c:symbol val="circle"/><c:size val="4"/><c:spPr><a:solidFill><a:srgbClr val="C00000"/></a:solidFill><a:ln><a:noFill/></a:ln></c:spPr></c:marker>${cat}<c:val><c:numRef><c:f>${X(ch.cumRef)}</c:f>${numC(ch.cum)}</c:numRef></c:val><c:smooth val="0"/></c:ser><c:marker val="1"/><c:axId val="5011"/><c:axId val="5012"/></c:lineChart>`
+      + `<c:catAx><c:axId val="5011"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="b"/><c:title>${txt('Minggu', 900, 0)}<c:overlay val="0"/></c:title><c:numFmt formatCode="General" sourceLinked="0"/><c:majorTickMark val="out"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/><c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="800"/></a:pPr><a:endParaRPr lang="id-ID"/></a:p></c:txPr><c:crossAx val="5012"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/><c:noMultiLvlLbl val="0"/></c:catAx>`
+      + `<c:valAx><c:axId val="5012"/><c:scaling><c:orientation val="minMax"/><c:max val="100"/><c:min val="0"/></c:scaling><c:delete val="0"/><c:axPos val="l"/><c:majorGridlines><c:spPr><a:ln w="6350"><a:solidFill><a:srgbClr val="D9D9D9"/></a:solidFill></a:ln></c:spPr></c:majorGridlines><c:title>${txt('Bobot (%)', 900, 0)}<c:overlay val="0"/></c:title><c:numFmt formatCode="0" sourceLinked="0"/><c:majorTickMark val="out"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/><c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="800"/></a:pPr><a:endParaRPr lang="id-ID"/></a:p></c:txPr><c:crossAx val="5011"/><c:crosses val="autoZero"/><c:crossBetween val="between"/><c:majorUnit val="10"/></c:valAx>`
+      + `</c:plotArea><c:legend><c:legendPos val="b"/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/><c:dispBlanksAs val="gap"/></c:chart><c:spPr><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln><a:noFill/></a:ln></c:spPr></c:chartSpace>`);
+    const ct = get('[Content_Types].xml');
+    wr(ct, rd(ct).replace('</Types>', `<Override PartName="/xl/drawings/drawing${k}.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/><Override PartName="/xl/charts/chart${k}.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/></Types>`));
+  }
+
+  /* ---------- SVG Kurva S (layar dan cetak) ---------- */
+  function svgS(bars, cum, o = {}) {
+    const W = o.w || 720, H = o.h || 260, L = 38, R = 12, T = 14, B = 34, n = Math.max(1, cum.length);
+    const pw = W - L - R, ph = H - T - B, x = i => L + pw * (i + .5) / n, y = v => T + ph * (1 - Math.max(0, Math.min(100, v)) / 100);
+    const bw = Math.max(2, pw / n * .62), step = Math.ceil(n / 26);
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Grafik Kurva S" style="display:block;max-width:${W}px;font-family:Arial,sans-serif">`;
+    for (let g = 0; g <= 100; g += 20) s += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="#d9d9d9" stroke-width="1"/><text x="${L - 5}" y="${y(g) + 3}" font-size="9" text-anchor="end" fill="#555">${g}</text>`;
+    bars.forEach((v, i) => { if (v > 0) s += `<rect x="${(x(i) - bw / 2).toFixed(1)}" y="${y(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(T + ph - y(v)).toFixed(1)}" fill="#9BC2E6"/>`; });
+    s += `<polyline fill="none" stroke="#C00000" stroke-width="2.2" stroke-linejoin="round" points="${cum.map((v, i) => x(i).toFixed(1) + ',' + y(v).toFixed(1)).join(' ')}"/>`;
+    cum.forEach((v, i) => { s += `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="2.4" fill="#C00000"/>`; if (i % step === 0 || i === n - 1) s += `<text x="${x(i).toFixed(1)}" y="${H - B + 13}" font-size="9" text-anchor="middle" fill="#555">${i + 1}</text>`; });
+    s += `<line x1="${L}" x2="${W - R}" y1="${T + ph}" y2="${T + ph}" stroke="#888"/><text x="${L + pw / 2}" y="${H - 4}" font-size="9.5" text-anchor="middle" fill="#333">Minggu ke-</text>`;
+    s += `<g font-size="9.5" fill="#333"><rect x="${W - R - 230}" y="2" width="10" height="8" fill="#9BC2E6"/><text x="${W - R - 216}" y="10">Rencana per minggu</text><line x1="${W - R - 110}" x2="${W - R - 96}" y1="6" y2="6" stroke="#C00000" stroke-width="2.2"/><text x="${W - R - 92}" y="10">Kumulatif (%)</text></g>`;
+    return s + '</svg>';
+  }
+
+  /* ---------- Cetak A4 ----------
+     model: [{name, orient, cols:[lebar], head:[[sel]], body:[[sel]], chart?:{bars, cum}}]; sel: {t, cs, css, cls} */
+  const fmtN = (v, d) => (+v || 0).toLocaleString('id-ID', {minimumFractionDigits: d, maximumFractionDigits: d});
+  const CSS = `@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+*{box-sizing:border-box}html,body{margin:0;background:#fff;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font:8.5pt/1.3 Arial,Helvetica,sans-serif}
+.sheet{break-after:page;page-break-after:always}.sheet:last-child{break-after:auto;page-break-after:auto}.sheet.land{page:land}
+table{border-collapse:collapse;width:100%;table-layout:fixed}td,th{padding:2.2pt 3.5pt;vertical-align:top;overflow-wrap:anywhere}
+thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}
+.b{border:.6pt solid #444}.h{background:#D9E2F3;font-weight:bold;text-align:center;vertical-align:middle}.s{background:#F2F2F2;font-weight:bold}.i{background:#E2EFDA;font-weight:bold}
+.t{font-weight:bold;font-size:12pt;text-align:center;padding:4pt}.tl{font-weight:bold;font-size:12pt}.sub{font-style:italic;text-align:center}.nt{font-style:italic;font-size:7.5pt;color:#444}
+.r{text-align:right;white-space:nowrap}.c{text-align:center}.bo{font-weight:bold}.sig{text-align:center}.on{background:#9BC2E6}
+.wide td,.wide th{font-size:6.5pt;padding:1.4pt 1.6pt}.chart{margin-top:10pt;break-inside:avoid;page-break-inside:avoid}
+.wm{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:9}.wm span{transform:rotate(-32deg);font:bold 70pt Arial;color:rgba(200,0,0,.13);letter-spacing:6pt;white-space:nowrap}`;
+  function html(model, o) {
+    const ft = (o.footer || '').replace(/"/g, "'");
+    let h = `<!doctype html><html lang="id"><head><meta charset="utf-8"><title>${X(o.title || 'Cetak')}</title><style>${CSS.split('§FT§').join(ft.replace(/\\/g, ''))}</style></head><body>`;
+    if (o.demo) h += '<div class="wm"><span>VERSI DEMO</span></div>';
+    for (const sh of model) {
+      const tot = sh.cols.reduce((a, b) => a + b, 0) || 1;
+      const cg = `<colgroup>${sh.cols.map(w => `<col style="width:${(w / tot * 100).toFixed(3)}%">`).join('')}</colgroup>`, tc = sh.cols.length > 18 ? 'wide' : '';
+      h += `<section class="sheet${sh.orient === 'landscape' ? ' land' : ''}">`;
+      const row = (r, tag) => '<tr>' + r.map(c => `<${tag}${c.cs > 1 ? ` colspan="${c.cs}"` : ''}${c.cls ? ` class="${c.cls}"` : ''}${c.css ? ` style="${c.css}"` : ''}>${c.t == null ? '' : X(c.t).replace(/\n/g, '<br>')}</${tag}>`).join('') + '</tr>';
+      if (sh.pre && sh.pre.length) h += `<table style="margin-bottom:2pt">${cg}<tbody>` + sh.pre.map(r => row(r, 'td')).join('') + '</tbody></table>';
+      h += `<table class="${tc}">${cg}`;
+      if (sh.head.length) h += '<thead>' + sh.head.map(r => row(r, 'th')).join('') + '</thead>';
+      h += '<tbody>' + sh.body.map(r => row(r, 'td')).join('') + '</tbody></table>';
+      if (sh.chart) h += `<div class="chart">${svgS(sh.chart.bars, sh.chart.cum, {w: 980, h: 300})}</div>`;
+      h += '</section>';
+    }
+    return h + '</body></html>';
+  }
+  function printHtml(doc) {
+    const f = document.createElement('iframe');
+    f.setAttribute('aria-hidden', 'true'); f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0';
+    document.body.appendChild(f);
+    const w = f.contentWindow; w.document.open(); w.document.write(doc); w.document.close();
+    const go = () => { try { w.focus(); w.print(); } catch (e) { const u = URL.createObjectURL(new Blob([doc], {type: 'text/html'})); window.open(u, '_blank'); } setTimeout(() => f.remove(), 60000); };
+    if (w.document.readyState === 'complete') setTimeout(go, 250); else w.onload = () => setTimeout(go, 250);
+  }
+  /* dialog pilih lembar */
+  function dialog(names, defOff, cb, o) {
+    const id = 'scpDlg'; document.getElementById(id)?.remove();
+    const d = document.createElement('div'); d.id = id;
+    d.innerHTML = `<style>#${id}{position:fixed;inset:0;z-index:99;background:rgba(10,20,30,.45);display:grid;place-items:center;padding:16px;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}#${id} .bx{background:#fff;color:#18232d;border-radius:10px;width:min(420px,100%);box-shadow:0 20px 50px rgba(0,0,0,.3);overflow:hidden}#${id} h3{margin:0;padding:14px 18px;border-bottom:1px solid #d3dae0;font-size:16px}#${id} .bd{padding:14px 18px;display:grid;gap:9px;font-size:14px}#${id} label{display:flex;gap:9px;align-items:center;cursor:pointer}#${id} input{width:17px;height:17px}#${id} .ft{padding:12px 18px;border-top:1px solid #d3dae0;display:flex;gap:8px;justify-content:flex-end}#${id} button{font:600 13px system-ui,Arial;padding:7px 14px;border-radius:6px;border:1px solid #a9b5bf;background:#fff;cursor:pointer}#${id} button.p{background:#1f5f86;border-color:#1f5f86;color:#fff}#${id} p{margin:0;color:#5b6873;font-size:12.5px}</style>
+      <div class="bx" role="dialog" aria-modal="true" aria-labelledby="${id}T"><h3 id="${id}T">Cetak A4</h3><div class="bd">${names.map((n, i) => `<label><input type="checkbox" value="${i}" ${defOff.includes(n) ? '' : 'checked'}> ${X(n)}</label>`).join('')}<p>Pilih lembar yang dicetak. Di dialog cetak, pilih printer atau “Simpan sebagai PDF”, kertas A4.${o.demo ? ' Versi demo diberi tanda air VERSI DEMO.' : ''}</p></div><div class="ft"><button type="button" data-x>Batal</button><button type="button" class="p" data-ok>Cetak</button></div></div>`;
+    document.body.appendChild(d);
+    d.querySelector('[data-x]').onclick = () => d.remove();
+    d.onclick = e => { if (e.target === d) d.remove(); };
+    d.querySelector('[data-ok]').onclick = () => { const sel = [...d.querySelectorAll('input:checked')].map(i => +i.value); d.remove(); if (sel.length) cb(sel); };
+    d.querySelector('[data-ok]').focus();
+  }
+
+  /* ---------- adaptor: lembar AHSP Pro (XW) ---------- */
+  const AH = {title: 't', titleL: 'tl', sub: 'sub', lbl: 'bo', val: '', valn: 'r', note: 'nt', hdr: 'b h', c: 'b', cc: 'b c', n: 'b r', k: 'b r', pct: 'b r', inp: 'b r', inpk: 'b r', inpi: 'b c', sec: 'b s', secc: 'b s c', secn: 'b s r', it: 'b i', itc: 'b i c', tl: 'b bo r', tn: 'b bo r', tb: 'b s r', sig: 'sig', sigb: 'sig', pt: '', pv: '', pn: 'r', wk: 'b c', wkT: 'b s c'};
+  const AD = {n: 2, inp: 2, secn: 2, tn: 2, tb: 2, valn: 2, pn: 2, k: 4, inpk: 4, inpi: 0, wk: 2, wkT: 2};
+  function fromXW(sheets) {
+    return sheets.map(sh => {
+      const cell = c => {
+        if (!c) return null; let t = c.v;
+        if (typeof t === 'number') { if (c.s === 'pct') t = fmtN(t * 100, 2) + '%'; else if (c.s in AD) t = (c.s === 'wk' || c.s === 'wkT') && !t ? '' : fmtN(t, AD[c.s]); }
+        return {t, cs: c.span || 1, cls: (AH[c.s] ?? '') + (c.s === 'wk' && c.v > 0 ? ' on' : '')};
+      };
+      const conv = r => { const out = []; const cs = r.c || []; let i = 0; const n = sh.cols.length;
+        while (i < n) { const c = cs[i]; if (c) { const x = cell(c); out.push(x); i += x.cs; } else { out.push({t: '', cs: 1}); i++; } }
+        return out; };
+      const tr = sh.titleRows ? sh.titleRows : null;
+      const pre = [], head = [], body = [];
+      sh.rows.forEach((r, i) => { if (r.pad) return; const dst = tr && i < tr[0] ? pre : tr && i <= tr[1] ? head : body; if (!r.c || !r.c.length) { dst.push([{t: ' ', cs: sh.cols.length}]); return; } dst.push(conv(r)); });
+      return {name: sh.name, orient: sh.orient, cols: sh.cols, pre, head, body, chart: sh.chart ? {bars: sh.chart.bars, cum: sh.chart.cum} : null};
+    });
+  }
+  /* ---------- adaptor: lembar RAB Rumah (XWB) ---------- */
+  function nfFmt(nf, v) {
+    if (typeof v !== 'number') return v;
+    if (!nf) return String(v);
+    if (/;;/.test(nf) && !v) return '';
+    if (/%/.test(nf)) return fmtN(v, 2) + '%';
+    const m = /0\.(0+)/.exec(nf); return fmtN(v, m ? m[1].length : 0);
+  }
+  function fromXWB(wb) {
+    return wb.sheets.map(ws => {
+      const o = ws.opt, rows = Object.keys(ws.cells).map(Number).sort((a, b) => a - b);
+      let maxC = o.cols.length; rows.forEach(r => Object.keys(ws.cells[r]).forEach(c => { maxC = Math.max(maxC, +c); }));
+      const cover = {}, span = {};
+      ws.merges.forEach(([r1, c1, r2, c2]) => { span[r1 + ':' + c1] = c2 - c1 + 1; for (let r = r1; r <= r2; r++) for (let c = c1; c <= c2; c++) if (r !== r1 || c !== c1) cover[r + ':' + c] = 1; });
+      const tm = /\$(\d+):\$(\d+)/.exec(o.titles || ''); const t0 = tm ? +tm[1] : -1, t1 = tm ? +tm[2] : -1;
+      const pre = [], head = [], body = []; let last = 0;
+      rows.forEach(r => {
+        for (let g = last + 1; g < r; g++) (r <= t0 ? pre : body).push([{t: ' ', cs: maxC}]); last = r;
+        const out = [];
+        for (let c = 1; c <= maxC; c++) {
+          if (cover[r + ':' + c]) continue;
+          const cl = ws.cells[r][c] || {}, s = cl.s || {}; let v = cl.v; if (v && typeof v === 'object') v = v.v;
+          const bd = s.bd || ''; const b = k => bd.includes(k) ? '.6pt solid #555' : '';
+          const css = [s.b ? 'font-weight:bold' : '', s.i ? 'font-style:italic' : '', s.sz ? `font-size:${(s.sz * .85).toFixed(1)}pt` : '', s.h ? `text-align:${s.h}` : (typeof v === 'number' ? 'text-align:right;white-space:nowrap' : ''), s.fill ? `background:#${s.fill}` : '', s.color ? `color:#${s.color}` : '',
+            b('l') && `border-left:${b('l')}`, b('r') && `border-right:${b('r')}`, b('t') && `border-top:${b('t')}`, b('b') && `border-bottom:${b('b')}`].filter(Boolean).join(';');
+          const cf = ws.cf.some(x => x.ref && typeof v === 'number' && v > 0 && inRef(x.ref, r, c));
+          let cs = span[r + ':' + c] || 1;
+          if (cs === 1 && typeof v === 'string' && v.length > 12 && !s.wrap) { while (c + cs <= maxC && !ws.cells[r][c + cs] && !cover[r + ':' + (c + cs)]) cs++; }
+          out.push({t: nfFmt(s.nf, v), cs, css: css + (cs > (span[r + ':' + c] || 1) ? ';white-space:normal' : ''), cls: cf ? 'on' : ''});
+          c += cs - 1;
+        }
+        (r < t0 ? pre : r <= t1 ? head : body).push(out);
+      });
+      return {name: ws.name, orient: o.landscape ? 'landscape' : 'portrait', cols: Array.from({length: maxC}, (_, i) => o.cols[i] || 9), pre, head, body, chart: o.chart ? {bars: o.chart.bars, cum: o.chart.cum} : null};
+    });
+  }
+  function inRef(ref, r, c) {
+    const m = /^([A-Z]+)(\d+):([A-Z]+)(\d+)$/.exec(ref); if (!m) return false;
+    const cn = s => [...s].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0);
+    return r >= +m[2] && r <= +m[4] && c >= cn(m[1]) && c <= cn(m[3]);
+  }
+  function run(model, o) { dialog(model.map(m => m.name), o.off || [], sel => printHtml(html(sel.map(i => model[i]), o)), o); }
+  window.SCP = {addChart, svgS, fromXW, fromXWB, run, html};
+})();
+
+</script>
 </body>
 </html>
