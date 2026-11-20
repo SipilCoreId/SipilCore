@@ -1200,13 +1200,57 @@ thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}
     }
     return h + '</body></html>';
   }
-  function printHtml(doc) {
-    const f = document.createElement('iframe');
-    f.setAttribute('aria-hidden', 'true'); f.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0';
-    document.body.appendChild(f);
-    const w = f.contentWindow; w.document.open(); w.document.write(doc); w.document.close();
-    const go = () => { try { w.focus(); w.print(); } catch (e) { const u = URL.createObjectURL(new Blob([doc], {type: 'text/html'})); window.open(u, '_blank'); } setTimeout(() => f.remove(), 60000); };
-    if (w.document.readyState === 'complete') setTimeout(go, 250); else w.onload = () => setTimeout(go, 250);
+  /* cetak langsung dari halaman ini (tanpa iframe/jendela baru) */
+  const PCSS = `@media screen{#scpOut{display:none!important}}
+@media print{
+@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important;min-height:0!important;overflow:visible!important;display:block!important}
+body>*:not(#scpOut){display:none!important}
+#scpOut{display:block!important;position:static!important;color:#111;background:#fff;font:8.5pt/1.3 Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#scpOut :where(*:not(svg):not(svg *)){all:revert;box-sizing:border-box}
+#scpOut .sheet{display:block;break-after:page;page-break-after:always}#scpOut .sheet:last-child{break-after:auto;page-break-after:auto}#scpOut .sheet.land{page:land}
+#scpOut table{border-collapse:collapse;width:100%;table-layout:fixed;font:8.5pt/1.3 Arial,Helvetica,sans-serif;color:#111}
+#scpOut td,#scpOut th{padding:2.2pt 3.5pt;vertical-align:top;overflow-wrap:anywhere;text-align:left;font-weight:normal}
+#scpOut thead{display:table-header-group}#scpOut tr{break-inside:avoid;page-break-inside:avoid}
+#scpOut .b{border:.6pt solid #444}#scpOut .h{background:#D9E2F3;font-weight:bold;text-align:center;vertical-align:middle}#scpOut .s{background:#F2F2F2;font-weight:bold}#scpOut .i{background:#E2EFDA;font-weight:bold}
+#scpOut .t{font-weight:bold;font-size:12pt;text-align:center;padding:4pt}#scpOut .tl{font-weight:bold;font-size:12pt}#scpOut .sub{font-style:italic;text-align:center}#scpOut .nt{font-style:italic;font-size:7.5pt;color:#444}
+#scpOut .r{text-align:right;white-space:nowrap}#scpOut .c{text-align:center}#scpOut .bo{font-weight:bold}#scpOut .sig{text-align:center}#scpOut .on{background:#9BC2E6}
+#scpOut .wide td,#scpOut .wide th{font-size:6.5pt;padding:1.4pt 1.6pt}#scpOut .chart{display:block;margin-top:10pt;break-inside:avoid;page-break-inside:avoid}
+#scpOut .wm{display:flex;position:fixed;inset:0;align-items:center;justify-content:center;pointer-events:none;z-index:9}#scpOut .wm span{display:block;transform:rotate(-32deg);font:bold 70pt Arial;color:rgba(200,0,0,.13);letter-spacing:6pt;white-space:nowrap}
+}`;
+  function cleanup() { document.getElementById('scpOut')?.remove(); document.getElementById('scpCss')?.remove(); }
+  function printInPage(model, o) {
+    cleanup();
+    const doc = html(model, o); const body = doc.slice(doc.indexOf('<body>') + 6, doc.lastIndexOf('</body>'));
+    const st = document.createElement('style'); st.id = 'scpCss'; st.textContent = PCSS.split('§FT§').join((o.footer || '').replace(/["\\]/g, "'"));
+    const out = document.createElement('div'); out.id = 'scpOut'; out.innerHTML = body;
+    document.head.appendChild(st); document.body.appendChild(out);
+    const prevT = document.title; if (o.title) document.title = o.title;
+    window.addEventListener('afterprint', () => { cleanup(); document.title = prevT; }, {once: true});
+    setTimeout(() => {
+      const t0 = Date.now(); let ok = true;
+      try { window.print(); } catch (e) { ok = false; }
+      if (!ok || Date.now() - t0 < 120) setTimeout(() => { if (document.getElementById('scpOut')) notice(model, o); }, 400);
+    }, 60);
+  }
+  /* bila dialog cetak diblokir (mis. halaman pratinjau), tawarkan berkas cetak */
+  function notice(model, o) {
+    const id = 'scpNote'; document.getElementById(id)?.remove();
+    const d = document.createElement('div'); d.id = id;
+    d.innerHTML = `<div style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:100;background:#18232d;color:#fff;border-radius:10px;padding:12px 14px;max-width:min(560px,calc(100% - 24px));font:13px/1.45 system-ui,Arial,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.3);display:grid;gap:8px">
+      <span>Jika dialog cetak tidak muncul, browser atau halaman pratinjau ini memblokirnya. Unduh lembar cetak, buka berkasnya, lalu tekan <b>Ctrl+P</b> (di Mac <b>⌘+P</b>).</span>
+      <span style="display:flex;gap:8px;justify-content:flex-end"><button type="button" data-x style="font:600 13px system-ui,Arial;padding:6px 12px;border-radius:6px;border:1px solid #889;background:transparent;color:#fff;cursor:pointer">Tutup</button><button type="button" data-dl style="font:600 13px system-ui,Arial;padding:6px 12px;border-radius:6px;border:0;background:#F2B705;color:#1B1500;cursor:pointer">Unduh lembar cetak (.html)</button></span></div>`;
+    document.body.appendChild(d);
+    d.querySelector('[data-x]').onclick = () => { d.remove(); cleanup(); };
+    d.querySelector('[data-dl]').onclick = () => {
+      const doc = html(model, o).replace('</body>', '<script>window.onload=()=>setTimeout(()=>print(),300)<\/script></body>');
+      const name = (o.title || 'Cetak').replace(/[\\/:*?"<>|]+/g, ' ').trim() + ' - cetak A4.html';
+      const blob = new Blob([doc], {type: 'text/html'});
+      if (typeof window.saveBlob === 'function') { try { window.saveBlob(name, blob); d.remove(); cleanup(); return; } catch (e) {} }
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { a.remove(); URL.revokeObjectURL(a.href); }, 4000);
+      d.remove(); cleanup();
+    };
   }
   /* dialog pilih lembar */
   function dialog(names, defOff, cb, o) {
@@ -1281,7 +1325,7 @@ thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}
     const cn = s => [...s].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0);
     return r >= +m[2] && r <= +m[4] && c >= cn(m[1]) && c <= cn(m[3]);
   }
-  function run(model, o) { dialog(model.map(m => m.name), o.off || [], sel => printHtml(html(sel.map(i => model[i]), o)), o); }
+  function run(model, o) { dialog(model.map(m => m.name), o.off || [], sel => printInPage(sel.map(i => model[i]), o), o); }
   window.SCP = {addChart, svgS, fromXW, fromXWB, run, html};
 })();
 
