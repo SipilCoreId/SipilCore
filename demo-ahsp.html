@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Demo AHSP Pro – AHSP Cipta Karya, Bina Marga, SDA</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%23123a5c%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Arial%27 font-weight=%27700%27 font-size=%2726%27 fill=%27%23f2b632%27 text-anchor=%27middle%27%3EAP%3C/text%3E%3C/svg%3E">
+<title>Demo AHSP Pro – SipilCore</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="canonical" href="https://arifinsimo7-ui.github.io/SipilCore/demo-ahsp.html">
 <style>
 /* Layout: lembar kerja estimator — bilah atas tetap, daftar analisa di kiri, lembar analisa bergaris di kanan; tinta biru-baja di atas kertas abu dingin, amber untuk harga yang diubah. */
@@ -410,7 +411,7 @@ const GRES = JSON.parse(document.getElementById('gresik-data').textContent);
 const GLOK = '3525G', IKK_GRS = KAB['3525'][1];
 KAB[GLOK] = ['Kabupaten Gresik · Perbup 33/2025', IKK_GRS];
 const DEMO_LOK = ['1275', '3525', '3578', '3515', '3524', '3573', '3374', '3471', '3273', '3171', '3201', '5171', '7371', '6471', '6171', '1671', '1471', '1371', '5371', '9471'];
-const WA_BUY = 'https://wa.me/6282110006907?text=' + encodeURIComponent('Halo AHSP Pro, saya sudah mencoba aplikasi demo dan ingin membeli aplikasi AHSP Pro Desktop. Mohon info harga dan cara aktivasinya.');
+const WA_BUY = 'https://wa.me/6282110006907?text=' + encodeURIComponent('Halo SipilCore, saya sudah mencoba aplikasi demo dan ingin membeli aplikasi AHSP Pro Desktop. Mohon info harga dan cara aktivasinya.');
 if (DEMO) { for (const k of Object.keys(KAB)) if (!DEMO_LOK.includes(k)) delete KAB[k]; for (const k of Object.keys(PROV)) if (!Object.keys(KAB).some(c => c.startsWith(k))) delete PROV[k]; }
 const BMI = JSON.parse(document.getElementById('bm-items').textContent);
 const SDAI = JSON.parse(document.getElementById('sda-items').textContent);

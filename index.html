@@ -3,15 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>AHSP Pro – Aplikasi AHSP dan RAB</title>
-<meta name="description" content="Aplikasi desktop AHSP Pro (Cipta Karya, Bina Marga, SDA sesuai SE 47/SE/Dk/2026) dan RAB Rumah & Ruko. Harga sesuai IKK lokasi, cetak Excel berumus. Coba demonya gratis.">
+<title>SipilCore – Aplikasi AHSP dan RAB</title>
+<meta name="description" content="SipilCore: aplikasi desktop AHSP Pro (Cipta Karya, Bina Marga, SDA sesuai SE 47/SE/Dk/2026) dan RAB Rumah & Ruko. Harga sesuai IKK lokasi, cetak Excel berumus. Coba demonya gratis.">
 <link rel="canonical" href="https://arifinsimo7-ui.github.io/SipilCore/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="AHSP Pro – Aplikasi AHSP dan RAB">
-<meta property="og:description" content="Aplikasi desktop AHSP Pro (Cipta Karya, Bina Marga, SDA sesuai SE 47/SE/Dk/2026) dan RAB Rumah & Ruko. Harga sesuai IKK lokasi, cetak Excel berumus. Coba demonya gratis.">
+<meta property="og:title" content="SipilCore – Aplikasi AHSP dan RAB">
+<meta property="og:description" content="SipilCore: aplikasi desktop AHSP Pro (Cipta Karya, Bina Marga, SDA sesuai SE 47/SE/Dk/2026) dan RAB Rumah & Ruko. Harga sesuai IKK lokasi, cetak Excel berumus. Coba demonya gratis.">
+<meta property="og:image" content="https://arifinsimo7-ui.github.io/SipilCore/assets/og.png">
+<meta property="og:site_name" content="SipilCore">
 <meta property="og:url" content="https://arifinsimo7-ui.github.io/SipilCore/">
 <meta name="theme-color" content="#123a5c">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2714%27 fill=%27%23123a5c%27/%3E%3Ctext x=%2732%27 y=%2742%27 font-family=%27Arial%27 font-weight=%27700%27 font-size=%2726%27 fill=%27%23f2b632%27 text-anchor=%27middle%27%3EAP%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -62,6 +65,8 @@ p{margin:0}
 .top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 1.45rem/1 var(--f-display);letter-spacing:.02em}
 .brand svg{flex:none}
+.brand-mark{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:#fff}
+.brand-mark img{display:block;width:30px;height:30px}
 .brand b{color:var(--accent);font-weight:800}
 .nav{display:flex;gap:2px;margin-left:auto}
 .nav a{color:var(--hero-muted);text-decoration:none;font-weight:600;font-size:.93rem;padding:8px 9px;border-radius:6px}
@@ -379,9 +384,9 @@ footer b{color:var(--ink)}
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#atas" aria-label="AHSP Pro, ke atas">
-      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 22 L15 8 L23 22 Z" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"/><path d="M10.5 16.5 H19.5" stroke="currentColor" stroke-width="2"/></svg>
-      <span>AHSP<b>Pro</b></span>
+    <a class="brand" href="#atas" aria-label="SipilCore, ke atas">
+      <span class="brand-mark"><img src="assets/logo-mark.png" alt="" width="30" height="30"></span>
+      <span>Sipil<b>Core</b></span>
     </a>
     <nav class="nav" aria-label="Navigasi utama">
       <a href="#simulasi">Simulasi</a><a href="#produk">Produk</a><a href="#analisa">Contoh analisa</a><a href="#hasil">Hasil cetak</a><a href="#harga">Dasar harga</a><a href="#aplikasi">Demo vs lengkap</a><a href="#faq">FAQ</a>
@@ -704,7 +709,7 @@ footer b{color:var(--ink)}
 </main>
 
 <footer><div class="wrap">
-  <p><b>AHSP Pro</b> · Aplikasi desktop offline untuk analisis harga satuan pekerjaan dan RAB: AHSP Pro Desktop (Cipta Karya, Bina Marga, SDA sesuai SE Dirjen Bina Konstruksi No. 47/SE/Dk/2026) dan RAB Rumah &amp; Ruko Desktop, keduanya dengan bonus Kalkulator Volume.</p>
+  <p><img src="assets/logo.png" alt="SipilCore" width="120" style="display:block;height:auto;background:#fff;border-radius:10px;padding:8px 10px;margin-bottom:12px"><b>SipilCore</b> · Aplikasi desktop offline untuk analisis harga satuan pekerjaan dan RAB: AHSP Pro Desktop (Cipta Karya, Bina Marga, SDA sesuai SE Dirjen Bina Konstruksi No. 47/SE/Dk/2026) dan RAB Rumah &amp; Ruko Desktop, keduanya dengan bonus Kalkulator Volume.</p>
   <p>Simulasi dan contoh di halaman ini adalah demo dan bukan penawaran harga pekerjaan. Harga dasar acuan: harga satuan Kota Medan 2026, IKK BPS 2026, dan Perbup Gresik 33/2025.</p>
 </div></footer>
 <div class="toast" id="toast" hidden></div>
@@ -1104,7 +1109,7 @@ function prodText(v) { return v === 'pu' ? 'membeli aplikasi AHSP Pro Desktop' :
 function priceOf(v) { return ({pu: CFG.hpu, rm: CFG.hrm})[v] || ''; }
 function msg() {
   const v = id => $(id).value.trim(), pr = $('#fProd').value, k = pr === 'rm' ? 'Sebagai' : 'Bidang';
-  const lines = [`Halo AHSP Pro, saya ingin ${prodText(pr)}.` + (pr === 'ask' ? '' : ' Mohon info harga dan cara aktivasinya.'), '',
+  const lines = [`Halo SipilCore, saya ingin ${prodText(pr)}.` + (pr === 'ask' ? '' : ' Mohon info harga dan cara aktivasinya.'), '',
     v('#fNama') && 'Nama: ' + v('#fNama'), v('#fWa') && 'WhatsApp: ' + v('#fWa'), v('#fInst') && 'Instansi: ' + v('#fInst'), v('#fEmail') && 'Email: ' + v('#fEmail'),
     v('#fLok') && 'Lokasi: ' + v('#fLok'), pr !== 'ask' && pr !== 'both' && `${k}: ${v('#fJenis')}`, priceOf(pr) && 'Harga tercantum: ' + priceOf(pr), v('#fPesan') && 'Catatan: ' + v('#fPesan')];
   return lines.filter((x, i) => x || i === 1).join('\n').replace(/\n+$/, '');
@@ -1138,7 +1143,7 @@ $('#copyMsg').onclick = () => { if (!check()) return; copy(msg(), $('#prev')); $
 
 function applyCfg() {
   $('#num').textContent = fmtWa(CFG.wa) || CFG.wa;
-  $('#waDirect').href = waLink('Halo AHSP Pro, saya ingin bertanya tentang aplikasi AHSP Pro dan RAB Rumah & Ruko.');
+  $('#waDirect').href = waLink('Halo SipilCore, saya ingin bertanya tentang aplikasi AHSP Pro dan RAB Rumah & Ruko.');
   $('#mailWrap').hidden = !CFG.email; $('#mail').textContent = CFG.email;
   $$('[data-demo]').forEach(a => a.href = a.dataset.demo === 'pu' ? CFG.dpu : CFG.drm);
   demoHref();
