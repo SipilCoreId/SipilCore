@@ -326,6 +326,7 @@ table.cmp thead .hl{color:var(--ink)}
 .buy li,.ck li{display:grid;grid-template-columns:20px minmax(0,1fr);gap:8px;color:var(--ink)}
 .buy li::before,.ck li::before{content:"";width:12px;height:7px;border-left:2.5px solid var(--ok);border-bottom:2.5px solid var(--ok);transform:rotate(-45deg);margin-top:7px}
 .price{font:600 1rem var(--f-mono)}
+.eds{display:grid;gap:8px}.ed{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}.ed b{display:block;font-size:1rem}.ed span{display:block;font-size:.84rem;color:var(--muted);line-height:1.35}.ed .price{font-size:.84rem;color:var(--ink);margin-top:3px}.ed.full{border:2px solid var(--accent)}.ed.full b::after{content:"Paling lengkap";display:table;margin-top:5px;font:700 .68rem/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:var(--on-accent);padding:3px 6px;border-radius:4px;vertical-align:2px}
 
 /* faq */
 .faq{display:grid;gap:10px;max-width:860px}
@@ -477,7 +478,7 @@ footer b{color:var(--ink)}
     <article class="pc" data-pc="pu"><span class="tag">AHSP Pro Desktop</span><h3>Pekerjaan umum</h3>
       <p>Untuk konsultan perencana, kontraktor, dinas teknis, dan pemerintah desa yang menyusun AHSP dan RAB proyek pemerintah.</p>
       <div class="mini"><div><b class="mono">2.798</b><span>Cipta Karya · Lamp. VI</span></div><div><b class="mono">1.089</b><span>Bina Marga · Lamp. V</span></div><div><b class="mono">1.103</b><span>SDA · Lamp. IV</span></div></div>
-      <ul><li>Gedung, lapangan tenis, kolam renang, SPAM, drainase, jalan, jembatan, dermaga, irigasi, sungai, embung</li><li>Rincian A/B/C sampai F untuk setiap analisa</li><li>Excel 5 sheet: Rekap, RAB, AHSP, Harga Dasar, Info</li><li><b>Bonus Kalkulator Volume</b>: 22 hitungan, termasuk jalan, saluran, pipa, bronjong, dan embung</li></ul>
+      <ul><li><b>Tersedia per bidang</b> (Cipta Karya, Bina Marga, atau SDA) atau paket lengkap tiga bidang</li><li>Gedung, lapangan tenis, kolam renang, SPAM, drainase, jalan, jembatan, dermaga, irigasi, sungai, embung</li><li>Rincian A/B/C sampai F untuk setiap analisa</li><li>Excel 5 sheet: Rekap, RAB, AHSP, Harga Dasar, Info</li><li><b>Bonus Kalkulator Volume</b>: 22 hitungan, termasuk jalan, saluran, pipa, bronjong, dan embung</li></ul>
       <div class="acts"><button class="btn btn-ink" type="button" data-psel="pu" data-go="simulasi">Coba simulasinya</button><a class="btn btn-line" data-demo="pu" href="#" target="_blank" rel="noopener">Buka demo</a></div></article>
     <article class="pc" data-pc="rm"><span class="tag">RAB Rumah &amp; Ruko Desktop</span><h3>Rumah dan ruko</h3>
       <p>Untuk kontraktor, konsultan, tukang, developer, dan pemilik rumah yang menyusun RAB bangunan tinggal secara rutin.</p>
@@ -605,11 +606,10 @@ footer b{color:var(--ink)}
         <tr><td>Bekerja tanpa internet</td><td class="c">–</td><td class="c hl">✓</td></tr>
       </tbody>
     </table></div>
-    <article class="card buy"><span class="tag">AHSP Pro Desktop</span><h3>Aplikasi versi lengkap</h3>
-      <p style="color:var(--muted)">Untuk konsultan perencana, kontraktor, dinas teknis, dan pemerintah desa yang menyusun AHSP dan RAB sendiri.</p>
-      <ul><li>Seluruh fitur versi lengkap</li><li>Koefisien SE 47/SE/Dk/2026 tiga bidang</li><li>Excel A4 berumus siap cetak</li><li>Bonus Kalkulator Volume 22 hitungan</li></ul>
-      <span class="price" data-price="pu">Tanya harga lewat WhatsApp</span>
-      <a class="btn btn-y" href="#kontak" data-order="pu">Pesan AHSP Pro Desktop</a>
+    <article class="card buy"><span class="tag">AHSP Pro Desktop</span><h3>Pilih edisi</h3>
+      <p style="color:var(--muted)">Beli satu bidang sesuai pekerjaan yang Anda tangani, atau paket lengkap tiga bidang.</p>
+      <div class="eds"><div class="ed"><div><b>AHSP Pro Cipta Karya</b><span>2.798 analisa · Lamp. VI · gedung, rumah, SPAM, drainase, kolam, lapangan</span><span class="price" data-price="ck">Tanya harga lewat WhatsApp</span></div><a class="btn btn-y btn-s" href="#kontak" data-order="ck">Pesan</a></div><div class="ed"><div><b>AHSP Pro Bina Marga</b><span>1.089 analisa · Lamp. V · jalan, jembatan, saluran samping, dermaga</span><span class="price" data-price="bm">Tanya harga lewat WhatsApp</span></div><a class="btn btn-y btn-s" href="#kontak" data-order="bm">Pesan</a></div><div class="ed"><div><b>AHSP Pro SDA</b><span>1.103 analisa · Lamp. IV · irigasi, sungai, tanggul, embung</span><span class="price" data-price="sda">Tanya harga lewat WhatsApp</span></div><a class="btn btn-y btn-s" href="#kontak" data-order="sda">Pesan</a></div><div class="ed full"><div><b>AHSP Pro Lengkap</b><span>4.990 analisa · Cipta Karya + Bina Marga + SDA dalam satu aplikasi</span><span class="price" data-price="pu">Tanya harga lewat WhatsApp</span></div><a class="btn btn-y btn-s" href="#kontak" data-order="pu">Pesan</a></div></div>
+      <ul><li>Setiap edisi: harga dasar × IKK 514 kabupaten/kota dan Perbup Gresik 33/2025</li><li>Excel A4 berumus siap cetak</li><li>Bonus Kalkulator Volume</li></ul>
       <a class="btn btn-line" data-demo="pu" href="#" target="_blank" rel="noopener">Coba aplikasi demo dulu</a></article>
   </div>
   <div class="lic" data-pp="rm" hidden>
@@ -683,7 +683,7 @@ footer b{color:var(--ink)}
   </div>
   <form class="form" id="lead" novalidate autocomplete="off">
     <h3>Formulir pemesanan</h3>
-    <label class="f" for="fProd">Aplikasi<select id="fProd"><option value="pu">AHSP Pro Desktop · pekerjaan umum</option><option value="rm">RAB Rumah &amp; Ruko Desktop</option><option value="both">Dua aplikasi: AHSP Pro dan RAB Rumah &amp; Ruko</option><option value="ask">Tanya dulu tentang aplikasi</option></select></label>
+    <label class="f" for="fProd">Aplikasi<select id="fProd"><optgroup label="AHSP Pro · pekerjaan umum"><option value="pu">AHSP Pro Lengkap · tiga bidang</option><option value="ck">AHSP Pro Cipta Karya</option><option value="bm">AHSP Pro Bina Marga</option><option value="sda">AHSP Pro SDA (Sumber Daya Air)</option></optgroup><optgroup label="Rumah dan ruko"><option value="rm">RAB Rumah &amp; Ruko Desktop</option></optgroup><optgroup label="Paket"><option value="both">AHSP Pro Lengkap + RAB Rumah &amp; Ruko</option></optgroup><option value="ask">Tanya dulu tentang aplikasi</option></select></label>
     <div class="row2">
       <label class="f" for="fNama"><span>Nama <span class="req">*</span></span><input type="text" id="fNama" name="pemesan-nama" autocomplete="off" placeholder="Nama Anda"></label>
       <label class="f" for="fWa"><span>Nomor WhatsApp <span class="req">*</span></span><input type="tel" id="fWa" name="pemesan-wa" autocomplete="off" inputmode="tel" placeholder="08xx xxxx xxxx"></label>
@@ -724,7 +724,10 @@ footer b{color:var(--ink)}
       <label class="f" for="s-wa">Nomor WhatsApp<input type="tel" id="s-wa" name="toko-wa" autocomplete="off" placeholder="082110006907"></label>
       <label class="f" for="s-email">Email (opsional)<input type="email" id="s-email" name="toko-email" autocomplete="off"></label>
       <h3>Harga aplikasi</h3>
-      <label class="f" for="s-hpu">Harga AHSP Pro Desktop<input type="text" id="s-hpu" placeholder="Contoh: Rp 1.500.000 sekali bayar"></label>
+      <label class="f" for="s-hpu">Harga AHSP Pro Lengkap (tiga bidang)<input type="text" id="s-hpu" placeholder="Contoh: Rp 1.500.000 sekali bayar"></label>
+      <label class="f" for="s-hck">Harga AHSP Pro Cipta Karya<input type="text" id="s-hck" placeholder="Contoh: Rp 750.000 sekali bayar"></label>
+      <label class="f" for="s-hbm">Harga AHSP Pro Bina Marga<input type="text" id="s-hbm" placeholder="Contoh: Rp 750.000 sekali bayar"></label>
+      <label class="f" for="s-hsda">Harga AHSP Pro SDA<input type="text" id="s-hsda" placeholder="Contoh: Rp 750.000 sekali bayar"></label>
       <label class="f" for="s-hrm">Harga RAB Rumah &amp; Ruko Desktop<input type="text" id="s-hrm" placeholder="Contoh: Rp 1.200.000 sekali bayar"></label>
       <label class="f" for="s-bayar">Petunjuk pembayaran<textarea id="s-bayar" placeholder="Contoh: Transfer ke BCA 123456789 a.n. ..."></textarea><span class="hint" style="font-weight:500">Ditampilkan ke pemesan setelah mereka mengirim formulir.</span></label>
       <h3>Tautan demo</h3>
@@ -768,8 +771,8 @@ const store = {get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null
 const waNum = s => { let d = String(s || '').replace(/\D/g, ''); if (d.startsWith('0')) d = '62' + d.slice(1); return d; };
 const fmtWa = s => { const d = String(s || '').replace(/\D/g, ''); return d.replace(/^(\d{4})(\d{4})(\d+)$/, '$1-$2-$3'); };
 
-let CFG = {wa: '082110006907', email: '', hpu: '', hrm: '', bayar: '', dpu: 'demo-ahsp.html', drm: 'demo-rab-rumah.html'};
-const SKEYS = ['wa', 'email', 'hpu', 'hrm', 'bayar', 'dpu', 'drm'];
+let CFG = {wa: '082110006907', email: '', hpu: '', hck: '', hbm: '', hsda: '', hrm: '', bayar: '', dpu: 'demo-ahsp.html', drm: 'demo-rab-rumah.html'};
+const SKEYS = ['wa', 'email', 'hpu', 'hck', 'hbm', 'hsda', 'hrm', 'bayar', 'dpu', 'drm'];
 const waLink = msg => `https://wa.me/${waNum(CFG.wa)}?text=${encodeURIComponent(msg)}`;
 const PNAME = {pu: 'AHSP Pro Desktop', rm: 'RAB Rumah & Ruko Desktop'};
 
@@ -866,7 +869,7 @@ function calc() {
     $('#mbar').innerHTML = parts.map((p, i) => `<span style="width:${(p[1] * 100).toFixed(2)}%;background:${COLORS[i]}" title="${short(p[0])}"></span>`).join('');
     $('#mleg').innerHTML = parts.map((p, i) => `<span><i style="background:${COLORS[i]}"></i>${short(p[0])} ${Math.round(p[1] * 100)}%</span>`).join('');
   }
-  $('#estBuy').onclick = () => { formTouched = true; $('#fProd').value = P === 'vol' ? HP : P; syncJenis(); upd(); };
+  $('#estBuy').onclick = () => { formTouched = true; $('#fProd').value = P === 'vol' ? HP : (P === 'pu' ? S.bid : P); syncJenis(); upd(); };
 }
 /* kalkulator volume */
 const nf = (v, d = 3) => (isFinite(v) ? v : 0).toLocaleString('id-ID', {maximumFractionDigits: d});
@@ -1102,16 +1105,16 @@ let formTouched = false;
 const JENIS = {pu: ['Semua bidang', 'Cipta Karya', 'Bina Marga', 'Sumber Daya Air'], rm: ['Kontraktor', 'Konsultan / arsitek', 'Tukang / mandor', 'Pemilik rumah', 'Developer', 'Drafter / estimator', 'Lainnya']};
 function syncJenis() {
   const v = $('#fProd').value, k = v === 'rm' ? 'rm' : 'pu', old = $('#fJenis').value;
-  $('#fJenisL').firstChild.textContent = k === 'rm' ? 'Anda sebagai' : 'Bidang yang dipakai';
+  $('#fJenisL').firstChild.textContent = k === 'rm' ? 'Anda sebagai' : 'Bidang yang dipakai'; $('#fJenisL').hidden = v !== 'rm';
   if ($('#fJenis').dataset.k !== k) { $('#fJenis').innerHTML = JENIS[k].map(x => `<option>${x}</option>`).join(''); $('#fJenis').dataset.k = k; if (JENIS[k].includes(old)) $('#fJenis').value = old; }
 }
-function prodText(v) { return v === 'pu' ? 'membeli aplikasi AHSP Pro Desktop' : v === 'rm' ? 'membeli aplikasi RAB Rumah & Ruko Desktop' : v === 'both' ? 'membeli dua aplikasi: AHSP Pro Desktop dan RAB Rumah & Ruko Desktop' : 'bertanya tentang aplikasi AHSP Pro dan RAB Rumah & Ruko'; }
-function priceOf(v) { return ({pu: CFG.hpu, rm: CFG.hrm})[v] || ''; }
+function prodText(v) { return ({pu: 'membeli aplikasi AHSP Pro Lengkap (Cipta Karya, Bina Marga, dan SDA)', ck: 'membeli aplikasi AHSP Pro Cipta Karya', bm: 'membeli aplikasi AHSP Pro Bina Marga', sda: 'membeli aplikasi AHSP Pro SDA (Sumber Daya Air)', rm: 'membeli aplikasi RAB Rumah & Ruko Desktop', both: 'membeli paket AHSP Pro Lengkap dan RAB Rumah & Ruko Desktop'})[v] || 'bertanya tentang aplikasi AHSP Pro dan RAB Rumah & Ruko'; }
+function priceOf(v) { return ({pu: CFG.hpu, ck: CFG.hck, bm: CFG.hbm, sda: CFG.hsda, rm: CFG.hrm})[v] || ''; }
 function msg() {
   const v = id => $(id).value.trim(), pr = $('#fProd').value, k = pr === 'rm' ? 'Sebagai' : 'Bidang';
   const lines = [`Halo SipilCore, saya ingin ${prodText(pr)}.` + (pr === 'ask' ? '' : ' Mohon info harga dan cara aktivasinya.'), '',
     v('#fNama') && 'Nama: ' + v('#fNama'), v('#fWa') && 'WhatsApp: ' + v('#fWa'), v('#fInst') && 'Instansi: ' + v('#fInst'), v('#fEmail') && 'Email: ' + v('#fEmail'),
-    v('#fLok') && 'Lokasi: ' + v('#fLok'), pr !== 'ask' && pr !== 'both' && `${k}: ${v('#fJenis')}`, priceOf(pr) && 'Harga tercantum: ' + priceOf(pr), v('#fPesan') && 'Catatan: ' + v('#fPesan')];
+    v('#fLok') && 'Lokasi: ' + v('#fLok'), pr === 'rm' && `${k}: ${v('#fJenis')}`, priceOf(pr) && 'Harga tercantum: ' + priceOf(pr), v('#fPesan') && 'Catatan: ' + v('#fPesan')];
   return lines.filter((x, i) => x || i === 1).join('\n').replace(/\n+$/, '');
 }
 function upd() {
