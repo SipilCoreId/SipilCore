@@ -1,6 +1,6 @@
 # SipilCore
 
-Situs: https://arifinsimo7-ui.github.io/SipilCore/
+Situs: https://sipilcoreid.github.io/SipilCore/
 
 SipilCore menyediakan aplikasi desktop offline untuk teknik sipil:
 
