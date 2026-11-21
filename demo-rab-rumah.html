@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Demo RAB Rumah & Ruko – SipilCore</title>
+<meta name="copyright" content="© 2026 SipilCore Indonesia">
 <meta name="description" content="Versi demo aplikasi RAB Rumah & Ruko: 16 tipe rumah dan ruko, harga IKK lokasi, cetak Excel.">
 <link rel="canonical" href="https://arifinsimo7-ui.github.io/SipilCore/demo-rab-rumah.html">
 <meta property="og:type" content="website">
@@ -655,7 +656,7 @@ XWB.prototype.blob=function(){const E=XWB.esc,S=this.sheets;
     ['xl/_rels/workbook.xml.rels',`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${S.map((_,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${S.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
     ['xl/styles.xml',styles],...sheetXml.map((x,i)=>['xl/worksheets/sheet'+(i+1)+'.xml',x])];
-  S.forEach((ws,i)=>{if(ws.opt.chart&&window.SCP)SCP.addChart(files,i+1,ws.opt.chart)});
+  S.forEach((ws,i)=>{if(ws.opt.chart&&window.SCP)SCP.addChart(files,i+1,ws.opt.chart)});if(window.SCP)SCP.copy(files);
   return new Blob([XWB.zip(files)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})};
 XWB.zip=function(files){const enc=new TextEncoder(),T=XWB.crcT||(XWB.crcT=Array.from({length:256},(_,n)=>{let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;return c>>>0}));
   const crc=d=>{let c=0xFFFFFFFF;for(let i=0;i<d.length;i++)c=T[(c^d[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0};
@@ -1170,8 +1171,8 @@ window.openVolCalc=open;
   /* ---------- Cetak A4 ----------
      model: [{name, orient, cols:[lebar], head:[[sel]], body:[[sel]], chart?:{bars, cum}}]; sel: {t, cs, css, cls} */
   const fmtN = (v, d) => (+v || 0).toLocaleString('id-ID', {minimumFractionDigits: d, maximumFractionDigits: d});
-  const CSS = `@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
-@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+  const CSS = `@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@top-right{content:"© 2026 SipilCore Indonesia";font:italic 7pt Arial;color:#777}@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@top-right{content:"© 2026 SipilCore Indonesia";font:italic 7pt Arial;color:#777}@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
 *{box-sizing:border-box}html,body{margin:0;background:#fff;color:#111;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{font:8.5pt/1.3 Arial,Helvetica,sans-serif}
 .sheet{break-after:page;page-break-after:always}.sheet:last-child{break-after:auto;page-break-after:auto}.sheet.land{page:land}
@@ -1203,8 +1204,8 @@ thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}
   /* cetak langsung dari halaman ini (tanpa iframe/jendela baru) */
   const PCSS = `@media screen{#scpOut{display:none!important}}
 @media print{
-@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
-@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+@page{size:A4 portrait;margin:12mm 10mm 14mm 12mm;@top-right{content:"© 2026 SipilCore Indonesia";font:italic 7pt Arial;color:#777}@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
+@page land{size:A4 landscape;margin:10mm 10mm 13mm 12mm;@top-right{content:"© 2026 SipilCore Indonesia";font:italic 7pt Arial;color:#777}@bottom-left{content:"§FT§";font:italic 7pt Arial;color:#555}@bottom-right{content:"Halaman " counter(page) " dari " counter(pages);font:8pt Arial;color:#333}}
 html,body{background:#fff!important;margin:0!important;padding:0!important;height:auto!important;min-height:0!important;overflow:visible!important;display:block!important}
 body>*:not(#scpOut){display:none!important}
 #scpOut{display:block!important;position:static!important;color:#111;background:#fff;font:8.5pt/1.3 Arial,Helvetica,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -1325,8 +1326,27 @@ body>*:not(#scpOut){display:none!important}
     const cn = s => [...s].reduce((a, ch) => a * 26 + ch.charCodeAt(0) - 64, 0);
     return r >= +m[2] && r <= +m[4] && c >= cn(m[1]) && c <= cn(m[3]);
   }
+
+  /* hak cipta di setiap lembar Excel (header kanan) */
+  function copy(files) {
+    const nm = f => Array.isArray(f) ? f[0] : f.name, rd = f => Array.isArray(f) ? f[1] : f.data, wr = (f, d) => { if (Array.isArray(f)) f[1] = d; else f.data = d; };
+    const H = '<oddHeader>&amp;R&amp;"Arial,Italic"&amp;7© 2026 SipilCore Indonesia</oddHeader>';
+    files.filter(f => /^xl\/worksheets\/sheet\d+\.xml$/.test(nm(f))).forEach(f => {
+      let x = rd(f); if (x.includes('<oddHeader')) return;
+      x = x.includes('<headerFooter>') ? x.replace('<headerFooter>', '<headerFooter>' + H) : x.replace(/(<drawing |<\/worksheet>)/, '<headerFooter>' + H + '</headerFooter>$1');
+      wr(f, x);
+    });
+  }
+  /* hak cipta di layar aplikasi */
+  (function () {
+    const go = () => { if (document.getElementById('scCopy')) return; const d = document.createElement('div'); d.id = 'scCopy';
+      d.textContent = '© 2026 SipilCore Indonesia · Hak cipta dilindungi undang-undang. Dilarang menyalin, menggandakan, atau mendistribusikan aplikasi ini tanpa izin tertulis.';
+      d.style.cssText = 'text-align:center;font:12px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#8a97a3;padding:18px 16px 84px;max-width:900px;margin:0 auto';
+      document.body.appendChild(d); };
+    if (document.body) go(); else document.addEventListener('DOMContentLoaded', go);
+  })();
   function run(model, o) { dialog(model.map(m => m.name), o.off || [], sel => printInPage(sel.map(i => model[i]), o), o); }
-  window.SCP = {addChart, svgS, fromXW, fromXWB, run, html};
+  window.SCP = {addChart, copy, svgS, fromXW, fromXWB, run, html};
 })();
 
 </script>
